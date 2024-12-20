@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap");
+
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+:root {
+  color-scheme: light dark;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+@layer base {
+  body {
+    background-color: #112a;
+    color: #fff;
+  }
+
+  a.link {
+    @apply underline hover:text-blue-400;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Pixelify Sans", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    & > a {
+      text-decoration: none;
+      &:hover {
+        color: inherit;
+      }
+    }
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-1.5 bg-blue-400 shadow-sm shadow-slate-300 hover:shadow-none;
+  }
+}

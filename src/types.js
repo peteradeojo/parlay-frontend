@@ -5,8 +5,8 @@
  *  entry_amount: number|string;
  *  start_date: string,
  *  start_time: string,
- *  end_time: string,
- *  end_date: string,
+ *  close_time: string,
+ *  close_date: string,
  *  status: number;
  * }} Parlay
  */

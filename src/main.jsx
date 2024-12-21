@@ -13,6 +13,8 @@ import store from "./store.js";
 import { Provider } from "react-redux";
 import Home from "./pages/Home.jsx";
 import CreateParlay from "./pages/CreateParlay.jsx";
+import MyDrafts from "./pages/MyDrafts.jsx";
+import Draft from "./pages/Draft.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +22,12 @@ const router = createBrowserRouter(
       <Route element={<App />}>
         <Route index element={<Home />} />
         <Route path="/create" element={<CreateParlay />} />
+        <Route path="/drafts">
+          <Route element={<MyDrafts />} index />
+          <Route path=":id" element={<Draft />} />
+          <Route path=":id/edit" element={<Draft />} />
+        </Route>
+        <Route path="*" element={<p>Not found</p>} />
       </Route>
     </Route>
   )

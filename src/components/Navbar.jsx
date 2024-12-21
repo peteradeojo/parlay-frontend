@@ -6,6 +6,7 @@ import { Dropdown, Space } from "antd";
 import api, { useGetAuthQuery } from "../endpoints/api";
 import {
   DollarOutlined,
+  FileOutlined,
   HistoryOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
@@ -29,13 +30,18 @@ const profileLinkItems = (profile) => [
     ),
   },
   {
+    key: "drafts",
+    label: <Link to="/drafts">Your drafts</Link>,
+    icon: <FileOutlined />,
+  },
+  {
     key: "2",
-    label: <button href="#">Your parlays</button>,
+    label: <Link to="/my-parlays">Your parlays</Link>,
     icon: <HistoryOutlined />,
   },
   {
     key: "fund-account",
-    label: <button href="#">Fund Wallet</button>,
+    label: <Link to="/wallet">Fund Wallet</Link>,
     icon: <DollarOutlined />,
   },
   {

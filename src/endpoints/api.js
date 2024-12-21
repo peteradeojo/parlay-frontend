@@ -14,7 +14,7 @@ const api = createApi({
   }),
   refetchOnReconnect: true,
   keepUnusedDataFor: 60,
-  tagTypes: ['Auth', 'Parlays', 'MyParlays'],
+  tagTypes: ['Auth', 'Parlays', 'MyParlays', 'Drafts'],
   endpoints: (builder) => ({
     getAuth: builder.query({
       query: () => ({

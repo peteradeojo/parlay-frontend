@@ -33,4 +33,28 @@ const TextInput = ({
   );
 };
 
+/**
+ * @type {React.ElementType<React.InputHTMLAttributes>}
+ * @returns {React.JSX.Element}
+ */
+export const DateInput = ({
+  className,
+  type,
+  min,
+  max,
+  required,
+  value,
+  onChange,
+}) => (
+  <input
+    type={type}
+    min={min}
+    max={max}
+    className={`${className} block border bg-slate-600 p-2 rounded`}
+    required={required}
+    value={value}
+    onChange={onChange}
+  />
+);
+
 export { Container, TextInput };

@@ -26,4 +26,4 @@ const parlaysApi = api.injectEndpoints({
   }),
 });
 
-export const { useTopParlaysQuery } = parlaysApi;
+export const { useTopParlaysQuery, useCreateParlayMutation } = parlaysApi;

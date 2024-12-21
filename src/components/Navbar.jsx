@@ -1,3 +1,7 @@
+/**
+ * @typedef {import('../types')}
+ */
+
 import { Dropdown, Space } from "antd";
 import api, { useGetAuthQuery } from "../endpoints/api";
 import {
@@ -11,6 +15,7 @@ import { Link } from "react-router";
 /**
  *
  * @returns {import("antd/es/menu/interface").ItemType[]}
+ * @param {User?} profile
  */
 const profileLinkItems = (profile) => [
   {
@@ -96,7 +101,7 @@ const Navbar = () => {
       />
 
       <div className="flex gap-x-8 justify-between items-center">
-        <Link to={"/create"} className="btn">
+        <Link to={"/create"} className="btn bg-blue-400">
           {"\u002b"} Create a parlay
         </Link>
 

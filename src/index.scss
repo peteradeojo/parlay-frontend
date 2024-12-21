@@ -20,6 +20,10 @@
     color: #fff;
   }
 
+  .btn {
+    @apply px-4 py-1.5  shadow-sm shadow-slate-300 hover:shadow-none cursor-pointer;
+  }
+
   a.link {
     @apply underline hover:text-blue-400;
   }
@@ -44,7 +48,7 @@
 }
 
 @layer components {
-  .btn {
-    @apply px-4 py-1.5 bg-blue-400 shadow-sm shadow-slate-300 hover:shadow-none;
+  .btn-primary {
+    @apply bg-blue-400;
   }
 }

@@ -1,67 +1,220 @@
-import { useState } from "react";
-import { Container, TextInput } from "../components/Container";
+/**
+ * @typedef {import('../types')}
+ */
+
+import React, { useRef, useState } from "react";
+import { Container, DateInput, TextInput } from "../components/Container";
+import { notification } from "antd";
+import { SaveFilled } from "@ant-design/icons";
+import { ParlayCard } from "../components/ParlayCard";
+import { format, addHours, addMinutes, roundToNearestMinutes } from "date-fns";
+import { useCreateParlayMutation } from "../endpoints/parlays";
+import { useNavigate } from "react-router";
+
+/**
+ * @type {Parlay}
+ */
+const EmptyParlay = ((date) => ({
+  title: "",
+  outcomes: ["", ""],
+  entry_amount: 0,
+  status: 1,
+  start_date: format(date, "yyyy-MM-dd"),
+  start_time: format(date, "HH:mm"),
+  end_date: format(addHours(date, 1), "yyyy-MM-dd"),
+  end_time: format(addHours(date, 1), "HH:mm"),
+}))(roundToNearestMinutes(addMinutes(new Date(), 5)));
 
 const CreateParlay = () => {
-  const [events, setEvents] = useState(["", ""]);
+  const [parlay, setParlay] = useState({ ...EmptyParlay });
+
+  const minStartDate = format(new Date(), "yyyy-MM-dd");
+  const minEndDate = format(addMinutes(new Date(), 5), "yyyy-MM-dd");
+
+  /**
+   * @type {React.MutableRefObject<HTMLFormElement>}
+   */
+  const formRef = useRef();
+  const navigate = useNavigate();
+
+  const [create, createHook] = useCreateParlayMutation();
+
+  const saveParlay = async () => {
+    try {
+      const data = await create(parlay).unwrap();
+      notification.success({
+        message: data.message,
+        duration: 4,
+      });
+
+      if (data.is_draft) {
+        navigate("/drafts");
+      } else {
+        navigate(`/parlays/${data.code}`);
+      }
+    } catch (error) {
+      notification.error({
+        message: error.message,
+        duration: 4,
+      });
+      console.error(error);
+    }
+  };
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        saveParlay();
       }}
+      ref={formRef}
     >
-      <Container className="grid grid-cols-5">
-        <div className="col-start-2 col-span-3 rounded-md border-2 border-white p-3 flex flex-col gap-3 items-start">
+      <Container className="grid grid-cols-7 gap-x-4">
+        {/* Parlay form */}
+        <div className="col-span-5 rounded-md border-2 border-white p-3 flex flex-col gap-3 items-start">
           <h1 className="text-2xl">Set your parlay</h1>
           <div className="w-full">
             <label>Title</label>
-            <TextInput className="w-full" />
+            <TextInput
+              className="w-full"
+              placeholder="Jake Paul v. Mike Tyson"
+              value={parlay.title}
+              onChange={(e) => {
+                setParlay({ ...parlay, title: e.target.value });
+              }}
+            />
           </div>
 
+          {/* Outcomes */}
           <div className="w-full flex flex-col gap-3 py-3">
-            {events.map((i, k) => (
+            {parlay.outcomes.map((i, k) => (
               <div className="w-full" key={k}>
                 <label>Outcome {k + 1}</label>
-                <TextInput
-                  className="w-full"
-                  placeholder={`outcome ${k + 1}`}
-                  value={events[k]}
-                  onChange={(e) => {
-                    const evts = [...events];
-                    evts[k] = e.target.value;
-                    setEvents(evts);
-                  }}
-                  required
-                />
+                <span className="flex justify-between gap-x-3 items-center">
+                  <TextInput
+                    className="w-full"
+                    placeholder={`outcome ${k + 1}`}
+                    value={parlay.outcomes[k]}
+                    onChange={(e) => {
+                      const evts = [...parlay.outcomes];
+                      evts[k] = e.target.value;
+                      setParlay({ ...parlay, outcomes: evts });
+                    }}
+                    required
+                  />
+
+                  {/* Delete outcomes button */}
+                  {parlay.outcomes.length > 2 && (
+                    <span
+                      className="btn bg-red-400 text-xl font-semibold"
+                      onClick={(e) => {
+                        const evts = [...parlay.outcomes];
+                        evts.splice(k, 1); // splice is an in-place method
+                        setParlay({ ...parlay, outcomes: evts });
+                      }}
+                    >
+                      &times;
+                    </span>
+                  )}
+                </span>
               </div>
             ))}
 
-            <button className="btn self-start">Add Outcome</button>
+            <button
+              type="button"
+              className="btn btn-primary self-start"
+              onClick={(e) => {
+                if (parlay.outcomes.length <= 3) {
+                  setParlay({ ...parlay, outcomes: [...parlay.outcomes, ""] });
+                } else {
+                  notification.error({
+                    message: "Maximum outcomes reached.",
+                    duration: 4,
+                  });
+                }
+              }}
+            >
+              Add Outcome
+            </button>
           </div>
 
           <div className="w-1/3">
-            <label>Min. entry price $</label>
-            <TextInput className="w-full" placeholder="$1.00" />
+            <label>Entry price $</label>
+            <TextInput
+              className="w-full"
+              value={parlay.entry_amount}
+              placeholder="$1.00"
+              onChange={(e) =>
+                setParlay({ ...parlay, entry_amount: e.target.value })
+              }
+            />
           </div>
 
           <div className="w-1/2">
             <label>Start Date</label>
             <div className="flex gap-x-3">
-              <TextInput type={"date"} className="w-full" />
-              <TextInput type={"time"} className="w-full" />
+              <DateInput
+                type={"date"}
+                value={parlay.start_date}
+                min={minStartDate}
+                className="w-full"
+                onChange={(e) => {
+                  setParlay({ ...parlay, start_date: e.target.value });
+                }}
+              />
+              <DateInput
+                type={"time"}
+                value={parlay.start_time}
+                className="w-full"
+                onChange={(e) => {
+                  setParlay({ ...parlay, start_time: e.target.value });
+                }}
+              />
             </div>
           </div>
 
           <div className="w-1/2">
             <label>End Date</label>
             <div className="flex gap-x-3">
-              <TextInput type={"date"} className="w-full" />
-              <TextInput type="time" className="w-full" />
+              <DateInput
+                type={"date"}
+                value={parlay.end_date}
+                min={minEndDate}
+                className="w-full"
+                onChange={(e) => {
+                  setParlay({ ...parlay, end_date: e.target.value });
+                }}
+              />
+              <DateInput
+                type="time"
+                className="w-full"
+                value={parlay.end_time}
+                onChange={(e) => {
+                  setParlay({ ...parlay, end_time: e.target.value });
+                }}
+              />
             </div>
           </div>
 
-          <button className="btn w-full">Set</button>
+          <div className="grid grid-cols-6 gap-x-2 w-full">
+            <button type="submit" className="col-span-5 btn bg-blue-400 w-full">
+              Run Parlay
+            </button>
+            <button
+              type="button"
+              className="btn w-full bg-red-400"
+              onClick={(e) => {
+                setParlay({ ...parlay, status: 0 });
+                saveParlay();
+              }}
+            >
+              Save draft <SaveFilled />
+            </button>
+          </div>
         </div>
+
+        {/* Parlay preview */}
+        <ParlayCard parlay={parlay} />
       </Container>
     </form>
   );

@@ -19,12 +19,18 @@ const Draft = () => {
 
   useEffect(() => {
     if (data) {
+      if (data.status != 0) {
+        navigate("/");
+        return;
+      }
       setParlay(() => ({ ...data }));
     }
   }, [data]);
 
   const formRef = useRef();
   const saveDraft = async (parlay) => {
+    parlay.status = 0;
+
     try {
       const data = await update(parlay).unwrap();
       navigate("/drafts");
@@ -37,7 +43,28 @@ const Draft = () => {
     }
   };
 
-  const publish = (parlay) => {};
+  /**
+   *
+   * @param {Parlay} parlay
+   */
+  const publish = async (parlay) => {
+    parlay.status = 1;
+    try {
+      await update(parlay).unwrap();
+      notification.success({
+        message: "Parlay published!.",
+        duration: 3,
+      });
+
+      // navigate("/");
+    } catch (error) {
+      console.error(error);
+      notification.error({
+        message: error.data.message,
+        duration: 3,
+      });
+    }
+  };
 
   return (
     <>

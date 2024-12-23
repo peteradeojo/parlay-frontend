@@ -122,10 +122,13 @@ export const DraftParlayCard = ({ parlay, no_action = false }) => {
 
         {!no_action && (
           <div className="grid gap-y-2 place-self-end w-full">
-            <Link to={`/drafts/${parlay.id}`} className="btn bg-red-400 w-full">
-              Edit
+            <Link
+              to={`/drafts/${parlay.id}`}
+              className="btn bg-blue-400 w-full"
+            >
+              Edit or Publish
             </Link>
-            <button className="btn bg-blue-400 w-full">Publish</button>
+            {/* <button className="btn bg-blue-400 w-full">Publish</button> */}
           </div>
         )}
       </div>
@@ -133,6 +136,53 @@ export const DraftParlayCard = ({ parlay, no_action = false }) => {
   );
 };
 
+export const Outcomes = ({ outcomes }) => {
+  return (
+    <>
+      <div className="flex w-full justify-evenly border-collapse rounded-md">
+        {outcomes?.filter((i, k) => i != "").length > 0 ? (
+          outcomes
+            .filter((o, k) => o != "")
+            .map((out, k) => (
+              <button
+                className="btn p-1 w-full bg-gray-700 border border-red-400 rounded-[inherit]"
+                key={k}
+              >
+                <p>{out}</p>
+                <span className="text-xs">x0.0</span>
+              </button>
+            ))
+        ) : (
+          <>No outcome set.</>
+        )}
+      </div>
+    </>
+  );
+};
+
+/**
+ *
+ * @param {{parlay: Parlay}} param0
+ * @returns
+ */
 export const ParlayCard = ({ parlay }) => {
-  return <></>;
+  return (
+    <div className="border-2 p-2 rounded grid gap-y-3">
+      <div>
+        <p>#{parlay.code}</p>
+        <p className="my-1 text-lg">{parlay.title}</p>
+      </div>
+
+      <div>
+        <p className="text-lg">Outcomes</p>
+        <Outcomes outcomes={parlay.outcomes} />
+      </div>
+
+      <div>
+        <p>Entry: ${Number(parlay.entry_amount).toFixed(2)}</p>
+      </div>
+
+      <button className="btn bg-blue-400">Enter Parlay</button>
+    </div>
+  );
 };

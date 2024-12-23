@@ -1,4 +1,5 @@
 import { Container } from "../components/Container";
+import { DraftParlayCard } from "../components/ParlayCard";
 import { useTopParlaysQuery } from "../endpoints/parlays";
 
 const ParlayCard = ({ code, title }) => (
@@ -25,12 +26,13 @@ const Home = () => {
           <div className="grid grid-cols-4 gap-x-2 gap-y-2">
             {data.length > 0 ? (
               data.map((i, k) => (
-                <ParlayCard code={"#10004"} key={k} title={"Hey sexxy!"} />
+                <DraftParlayCard parlay={i} code={"#10004"} key={k} title={"Hey sexxy!"} />
               ))
             ) : (
               <div className="grid col-span-4 h-64 place-items-center w-full">
                 No parlays found.
               </div>
+
             )}
           </div>
         </>

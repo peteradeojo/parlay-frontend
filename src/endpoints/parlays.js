@@ -33,6 +33,19 @@ const parlaysApi = api.injectEndpoints({
       query: (id) => ({
         url: `parlays/${id}`,
       }),
+      providesTags: (result) =>
+        result ? [{ type: "Parlay", id: result.id }] : ["Parlay"],
+    }),
+    updateParlay: builder.mutation({
+      query: (parlay) => ({
+        url: `parlays/${parlay.id}`,
+        method: "PATCH",
+        body: parlay,
+      }),
+      invalidatesTags: (result, error, arg) => [
+        "Drafts",
+        { type: "Parlay", id: arg.id },
+      ],
     }),
   }),
 });
@@ -42,4 +55,5 @@ export const {
   useCreateParlayMutation,
   useGetDraftsQuery,
   useGetParlayQuery,
+  useUpdateParlayMutation,
 } = parlaysApi;

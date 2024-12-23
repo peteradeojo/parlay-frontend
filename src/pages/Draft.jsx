@@ -1,34 +1,52 @@
-import { useParams } from "react-router";
-import { useGetParlayQuery } from "../endpoints/parlays";
-import { Container } from "../components/Container";
+import { useNavigate, useParams } from "react-router";
+import {
+  useGetParlayQuery,
+  useUpdateParlayMutation,
+} from "../endpoints/parlays";
 import { useEffect, useRef, useState } from "react";
-import { ParlayForm, EmptyParlay } from "../pages/CreateParlay";
+import { ParlayForm } from "../pages/CreateParlay";
+import { notification } from "antd";
 
 const Draft = () => {
   const params = useParams();
+  const navigate = useNavigate();
 
   const { data, isLoading, isSuccess, isError } = useGetParlayQuery(params.id);
 
-  const [parlay, setParlay] = useState({ ...data });
+  const [parlay, setParlay] = useState(undefined);
+
+  const [update, updateHook] = useUpdateParlayMutation();
 
   useEffect(() => {
     if (data) {
-      setParlay((prev) => ({ ...data }));
+      setParlay(() => ({ ...data }));
     }
   }, [data]);
 
   const formRef = useRef();
-  const saveDraft = (parlay) => {};
+  const saveDraft = async (parlay) => {
+    try {
+      const data = await update(parlay).unwrap();
+      navigate("/drafts");
+    } catch (error) {
+      console.error(error);
+      notification.error({
+        message: error.data.message,
+        duration: 3,
+      });
+    }
+  };
 
-  console.log(data);
+  const publish = (parlay) => {};
 
   return (
     <>
-      {isSuccess && data ? (
+      {parlay != undefined ? (
         <ParlayForm
           parlayHook={[parlay, setParlay]}
           formRef={formRef}
           saveParlay={saveDraft}
+          publishParlay={publish}
           editing
         />
       ) : (

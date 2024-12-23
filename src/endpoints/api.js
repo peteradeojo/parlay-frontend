@@ -14,13 +14,13 @@ const api = createApi({
   }),
   refetchOnReconnect: true,
   keepUnusedDataFor: 60,
-  tagTypes: ['Auth', 'Parlays', 'MyParlays', 'Drafts'],
+  tagTypes: ["Auth", "Parlays", "MyParlays", "Drafts", "Parlay"],
   endpoints: (builder) => ({
     getAuth: builder.query({
       query: () => ({
-        url: 'auth',
+        url: "auth",
       }),
-      providesTags: ['Auth']
+      providesTags: ["Auth"],
     }),
   }),
 });

@@ -29,6 +29,7 @@ export const EmptyParlay = ((date) => ({
 export const ParlayForm = ({
   parlayHook,
   saveParlay,
+  publishParlay,
   formRef,
   editing = false,
 }) => {
@@ -41,7 +42,7 @@ export const ParlayForm = ({
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        saveParlay(parlay);
+        publishParlay(parlay);
       }}
       ref={formRef}
     >
@@ -230,8 +231,7 @@ const CreateParlay = () => {
       notification.error({
         message: error.data.error,
         duration: 4,
-      });
-      console.error(error);
+      }); console.error(error);
     }
   };
 
@@ -239,6 +239,7 @@ const CreateParlay = () => {
     <ParlayForm
       parlayHook={[parlay, setParlay]}
       formRef={formRef}
+      publishParlay={saveParlay}
       saveParlay={saveParlay}
     />
   );

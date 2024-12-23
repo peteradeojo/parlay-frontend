@@ -71,8 +71,6 @@ export const ParlayCardPreview = ({ parlay }) => {
  * @returns
  */
 export const DraftParlayCard = ({ parlay, no_action = false }) => {
-  console.log(parlay);
-
   return (
     <>
       <div className="border-2 border-white p-4 rounded w-full flex flex-col">

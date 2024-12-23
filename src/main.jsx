@@ -15,10 +15,12 @@ import Home from "./pages/Home.jsx";
 import CreateParlay from "./pages/CreateParlay.jsx";
 import MyDrafts from "./pages/MyDrafts.jsx";
 import Draft from "./pages/Draft.jsx";
+import Login from "./pages/Login.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
+      <Route path="/login" element={<Login />} />
       <Route element={<App />}>
         <Route index element={<Home />} />
         <Route path="/create" element={<CreateParlay />} />

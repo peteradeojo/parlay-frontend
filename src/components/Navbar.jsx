@@ -22,11 +22,11 @@ const profileLinkItems = (profile) => [
   {
     key: "1",
     label: (
-      <button href="#">
+      <Link to={"/account"}>
         <b className="text-lg">
           {profile?.firstname} {profile?.lastname}
         </b>
-      </button>
+      </Link>
     ),
   },
   {
@@ -65,6 +65,18 @@ const profileLinkItems = (profile) => [
   },
 ];
 
+export const ProfilePicture = ({ profile, height, width, className }) => (
+  <img
+    src={`https://api.dicebear.com/9.x/pixel-art/svg?seed=${
+      profile ? profile.firstname : ""
+    }`}
+    alt=""
+    className={className}
+    height={height || 65}
+    width={width || 65}
+  />
+);
+
 const ProfileLinks = ({ profile }) => (
   <Dropdown
     menu={{
@@ -76,15 +88,7 @@ const ProfileLinks = ({ profile }) => (
   >
     <span>
       <Space>
-        <img
-          src={`https://api.dicebear.com/9.x/pixel-art/svg?seed=${
-            profile ? profile.firstname : ""
-          }`}
-          alt=""
-          className="rounded-full bg-white"
-          height={65}
-          width={65}
-        />
+        <ProfilePicture profile={profile} className={"bg-white rounded-full bg-clip-border"} />
       </Space>
     </span>
   </Dropdown>

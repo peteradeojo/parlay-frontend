@@ -13,7 +13,7 @@ import { useNavigate } from "react-router";
 import { formatDate } from "../util";
 
 /**
- * @type {Parlay}
+ * @type {ParlayType}
  */
 export const EmptyParlay = ((date) => ({
   title: "",

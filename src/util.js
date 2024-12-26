@@ -17,3 +17,5 @@ export const formatTime = (time) => {
   if (!time) return "";
   return format(parse(time, "HH:mm:ss", new Date()), "hh:mm a");
 };
+
+export const combineDateAndTime = (date, time) => {};

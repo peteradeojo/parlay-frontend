@@ -1,5 +1,6 @@
 import { Container } from "../components/Container";
 import { DraftParlayCard, ParlayCard } from "../components/ParlayCard";
+import { useGetAuthQuery } from "../endpoints/api";
 import { useTopParlaysQuery } from "../endpoints/parlays";
 
 // const ParlayCard = ({ code, title }) => (
@@ -14,6 +15,7 @@ import { useTopParlaysQuery } from "../endpoints/parlays";
 
 const Home = () => {
   const { data, isLoading, isSuccess } = useTopParlaysQuery();
+  const { data: user } = useGetAuthQuery();
 
   return (
     <Container>
@@ -26,13 +28,16 @@ const Home = () => {
           <div className="grid grid-cols-4 gap-x-2 gap-y-2">
             {data.length > 0 ? (
               data.map((i, k) => (
-                <ParlayCard parlay={i} code={"#10004"} key={k} title={"Hey sexxy!"} />
+                <ParlayCard
+                  parlay={i}
+                  key={k}
+                  isMine={i.creator_id == user.id}
+                />
               ))
             ) : (
               <div className="grid col-span-4 h-64 place-items-center w-full">
                 No parlays found.
               </div>
-
             )}
           </div>
         </>

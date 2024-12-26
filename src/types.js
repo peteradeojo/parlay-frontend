@@ -1,5 +1,6 @@
 /**
  * @typedef {{
+ *  id: number;
  *  title: string;
  *  outcomes: string[];
  *  entry_amount: number|string;
@@ -8,7 +9,9 @@
  *  close_time: string,
  *  close_date: string,
  *  status: number;
- * }} Parlay
+ *  code: string;
+ *  creator: User;
+ * }} ParlayType
  */
 
 /**

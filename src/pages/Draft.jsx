@@ -45,7 +45,7 @@ const Draft = () => {
 
   /**
    *
-   * @param {Parlay} parlay
+   * @param {ParlayType} parlay
    */
   const publish = async (parlay) => {
     parlay.status = 1;

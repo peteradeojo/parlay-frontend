@@ -8,7 +8,7 @@ import { formatDate, formatTime } from "../util";
 
 /**
  * ParlayCard component
- * @param {{parlay: Parlay}} param0
+ * @param {{parlay: ParlayType}} param0
  * @returns
  */
 export const ParlayCardPreview = ({ parlay }) => {
@@ -67,7 +67,7 @@ export const ParlayCardPreview = ({ parlay }) => {
 
 /**
  *
- * @param {{parlay: Parlay}} param0
+ * @param {{parlay: ParlayType}} param0
  * @returns
  */
 export const DraftParlayCard = ({ parlay, no_action = false }) => {
@@ -162,10 +162,10 @@ export const Outcomes = ({ outcomes }) => {
 
 /**
  *
- * @param {{parlay: Parlay}} param0
+ * @param {{parlay: ParlayType, isMine: boolean}} param0
  * @returns
  */
-export const ParlayCard = ({ parlay }) => {
+export const ParlayCard = ({ parlay, isMine }) => {
   return (
     <div className="border-2 p-2 rounded grid gap-y-3">
       <div>
@@ -182,7 +182,18 @@ export const ParlayCard = ({ parlay }) => {
         <p>Entry: ${Number(parlay.entry_amount).toFixed(2)}</p>
       </div>
 
-      <button className="btn bg-blue-400">Enter Parlay</button>
+      <span>
+        <div>
+          Starts: {formatDate(parlay.start_date)}{" "}
+          {formatTime(parlay.start_time)}
+        </div>
+        <div>
+          Closes: {formatDate(parlay.close_date)}{" "}
+          {formatTime(parlay.close_time)}
+        </div>
+      </span>
+
+      {!isMine && <Link to={`/parlays/${parlay.id}`} className="btn bg-blue-400">Enter Parlay</Link>}
     </div>
   );
 };

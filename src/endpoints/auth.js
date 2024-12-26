@@ -4,7 +4,7 @@ import api from "./api";
 const guestApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/v1/",
+    baseUrl: import.meta.env.VITE_BASE_URL || "http://localhost:3000/v1/",
   }),
   tagTypes: ["Auth"],
   endpoints: (builder) => ({

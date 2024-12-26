@@ -54,19 +54,17 @@ const Login = () => {
                 .unwrap()
                 .then((data) => {
                   localStorage.setItem("authToken", data.token);
-                  localStorage.setItem("user", JSON.stringify(data.user));
+                  // localStorage.setItem("user", JSON.stringify(data.user));
 
                   notification.success({
                     message: "Login success",
                     duration: 3,
                   });
+
                   navigate('/');
                 })
                 .catch((err) => {
                   console.error(err);
-                })
-                .finally(() => {
-                  setLoginForm({ email: "", password: "" });
                 });
             }}
           >

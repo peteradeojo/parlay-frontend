@@ -4,7 +4,7 @@ import { useGetDraftsQuery } from "../endpoints/parlays";
 
 const MyDrafts = () => {
   /**
-   * @type {{data: Parlay[]}}
+   * @type {{data: ParlayType[]}}
    */
   const { data, isLoading, isError, isSuccess } = useGetDraftsQuery();
 

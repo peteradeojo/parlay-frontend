@@ -18,7 +18,7 @@ const Login = () => {
     firstname: "",
     lastname: "",
     terms: false,
-  });
+  }); 
 
   const [loginForm, setLoginForm] = useState({
     email: "",
@@ -61,7 +61,9 @@ const Login = () => {
                     duration: 3,
                   });
 
-                  navigate('/');
+                  setTimeout(() => {
+                    navigate("/");
+                  }, 3000);
                 })
                 .catch((err) => {
                   console.error(err);
@@ -123,7 +125,9 @@ const Login = () => {
                     message: "Sign-up success",
                     duration: 3,
                   });
-                  
+                  setTimeout(() => {
+                    navigate("/");
+                  }, 2000);
                 })
                 .catch((error) => {
                   console.error(error);

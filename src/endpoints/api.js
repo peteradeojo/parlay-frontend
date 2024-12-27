@@ -22,9 +22,16 @@ const api = createApi({
       }),
       providesTags: ["Auth"],
     }),
+    fundWallet: builder.mutation({
+      query: (body) => ({
+        url: "wallet/fund",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useGetAuthQuery } = api;
+export const { useGetAuthQuery, useFundWalletMutation } = api;
 
 export default api;

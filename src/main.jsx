@@ -18,6 +18,7 @@ import Draft from "./pages/Draft.jsx";
 import Login from "./pages/Login.jsx";
 import Parlay from "./pages/Parlay.jsx";
 import Profile from "./pages/Profile.jsx";
+import Deposit from "./pages/Deposit.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
       <Route element={<App />}>
         <Route index element={<Home />} />
         <Route path="/account" element={<Profile />} />
+        <Route path="/account/deposit" element={<Deposit />} />
         <Route path="/create" element={<CreateParlay />} />
         <Route path="/drafts">
           <Route element={<MyDrafts />} index />

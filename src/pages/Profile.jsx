@@ -2,6 +2,7 @@ import { DollarCircleTwoTone } from "@ant-design/icons";
 import { Container } from "../components/Container";
 import { ProfilePicture } from "../components/Navbar";
 import { useGetAuthQuery } from "../endpoints/api";
+import { Link } from "react-router";
 
 const Profile = () => {
   const { data } = useGetAuthQuery();
@@ -26,9 +27,9 @@ const Profile = () => {
             <p className="text-2xl col-span-2 col-start-1">
               $ {Number(data.wallet?.amount).toFixed(2)}
             </p>
-            <button className="btn bg-blue-400 place-self-start row-start-1 col-start-3 col-span-2 row-span-2 w-full">
+            <Link to={'/account/deposit'} className="btn bg-blue-400 place-self-start row-start-1 col-start-3 col-span-2 row-span-2 w-full">
               Fund Wallet
-            </button>
+            </Link>
           </div>
         </div>
       </div>

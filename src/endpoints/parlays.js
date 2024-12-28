@@ -21,7 +21,7 @@ const parlaysApi = api.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["MyParlays", "Drafts", "Parlays"],
+      invalidatesTags: ["MyParlays", "Drafts", "Parlays", "Auth"],
     }),
     getDrafts: builder.query({
       query: () => ({
@@ -47,6 +47,14 @@ const parlaysApi = api.injectEndpoints({
         { type: "Parlay", id: arg.id },
       ],
     }),
+    enterParlay: builder.mutation({
+      query: (body) => ({
+        url: `/parlays/enter/${body.id}`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Auth"],
+    }),
   }),
 });
 
@@ -56,4 +64,6 @@ export const {
   useGetDraftsQuery,
   useGetParlayQuery,
   useUpdateParlayMutation,
+  useEnterParlayMutation,
+  useMyParlaysQuery,
 } = parlaysApi;

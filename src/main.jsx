@@ -19,6 +19,7 @@ import Login from "./pages/Login.jsx";
 import Parlay from "./pages/Parlay.jsx";
 import Profile from "./pages/Profile.jsx";
 import Deposit from "./pages/Deposit.jsx";
+import Parlays from "./pages/Parlays.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
         </Route>
 
         <Route path="/parlays">
+          <Route index element={<Parlays />} />
           <Route path=":id" element={<Parlay />} />
         </Route>
         <Route path="*" element={<p>Not found</p>} />

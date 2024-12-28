@@ -174,9 +174,9 @@ export const ParlayForm = ({
           </div>
 
           <div className="grid grid-cols-6 gap-x-2 w-full">
-            {/* <button type="submit" className="col-span-5 btn bg-blue-400 w-full">
+            <button type="submit" className="col-span-5 btn bg-blue-400 w-full">
               Publish
-            </button> */}
+            </button>
 
             <button
               type="button"

@@ -54,7 +54,6 @@ const Login = () => {
                 .unwrap()
                 .then((data) => {
                   localStorage.setItem("authToken", data.token);
-                  // localStorage.setItem("user", JSON.stringify(data.user));
 
                   notification.success({
                     message: "Login success",

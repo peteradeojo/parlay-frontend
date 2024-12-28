@@ -136,7 +136,7 @@ export const DraftParlayCard = ({ parlay, no_action = false }) => {
   );
 };
 
-export const Outcomes = ({ outcomes }) => {
+export const Outcomes = ({ outcomes, state }) => {
   return (
     <>
       <div className="flex w-full justify-evenly border-collapse rounded-md">
@@ -145,11 +145,24 @@ export const Outcomes = ({ outcomes }) => {
             .filter((o, k) => o != "")
             .map((out, k) => (
               <button
-                className="btn p-1 w-full bg-gray-700 border border-red-400 rounded-[inherit]"
+                className={`btn p-1 w-full border rounded-[inherit] ${
+                  state && state[0] === k
+                    ? "bg-green-600"
+                    : "bg-gray-700 border-red-400"
+                }`}
                 key={k}
+                onClick={(e) => {
+                  if (state) {
+                    if (state[0] !== k) {
+                      state[1](k);
+                    } else {
+                      state[1](undefined);
+                    }
+                  }
+                }}
               >
                 <p>{out}</p>
-                <span className="text-xs">x0.0</span>
+                <span className="text-xs"></span>
               </button>
             ))
         ) : (
@@ -193,7 +206,11 @@ export const ParlayCard = ({ parlay, isMine }) => {
         </div>
       </span>
 
-      {!isMine && <Link to={`/parlays/${parlay.id}`} className="btn bg-blue-400">Enter Parlay</Link>}
+      {!isMine && (
+        <Link to={`/parlays/${parlay.id}`} className="btn bg-blue-400">
+          Enter Parlay
+        </Link>
+      )}
     </div>
   );
 };

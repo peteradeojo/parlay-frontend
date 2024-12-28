@@ -36,12 +36,12 @@ const profileLinkItems = (profile) => [
   },
   {
     key: "2",
-    label: <Link to="/my-parlays">Your parlays</Link>,
+    label: <Link to="/parlays">Your parlays</Link>,
     icon: <HistoryOutlined />,
   },
   {
     key: "fund-account",
-    label: <Link to="/wallet">Fund Wallet</Link>,
+    label: <Link to="/bets">Your bets</Link>,
     icon: <DollarOutlined />,
   },
   {

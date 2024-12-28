@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { Container, TextInput } from "../components/Container";
-import { useFundWalletMutation, useGetAuthQuery } from "../endpoints/api";
+import {
+  useFundWalletMutation,
+  useGetAuthQuery,
+  useVerifyFundingMutation,
+} from "../endpoints/api";
 import { notification } from "antd";
 import PaystackPop from "@paystack/inline-js";
+import { useNavigate } from "react-router";
 
 /**
  * @typedef {import('../types')}
@@ -15,8 +20,13 @@ const Deposit = () => {
   const { data: user } = useGetAuthQuery();
 
   const [amount, setAmount] = useState(0);
+  const [tx, setTx] = useState(undefined);
+  const [transaction, setTransaction] = useState(undefined);
+
+  const navigate = useNavigate();
 
   const [deposit, depositHook] = useFundWalletMutation();
+  const [verify, verifyHook] = useVerifyFundingMutation();
 
   const submitRequest = async (e) => {
     if (Number(amount) < 100) {
@@ -29,23 +39,43 @@ const Deposit = () => {
 
     try {
       const data = await deposit({ email: user.email, amount }).unwrap();
-
-      console.log(data);
-
       const popup = new PaystackPop();
 
-      const tx = popup.resumeTransaction(data.transaction.access_code, {
-        onSuccess: (data) => {
-          // TODO: submit transaction reference to backend for verification and giving value to user
+      popup.resumeTransaction(data.transaction.access_code, {
+        onSuccess: (data1) => {
+          setTx(data1);
+          setTransaction(data.data);
         },
+        onError: console.log,
+        onCancel: console.log,
       });
-      console.log(tx);
     } catch (err) {
       notification.error({
         message: err.message || "An error has occurred.",
         duration: 3,
       });
       console.error(err);
+    }
+  };
+
+  const verifyTransaction = async () => {
+    // ! submit transaction reference to backend for verification and giving value to user
+    try {
+      const r = await verify({
+        ...tx,
+        transaction_id: transaction.id,
+      }).unwrap();
+
+      setTransaction(undefined);
+      setTx(undefined);
+
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      notification.error({
+        message: error.data.message || "Could not verify your deposit.",
+        duration: 3,
+      });
     }
   };
 
@@ -64,6 +94,16 @@ const Deposit = () => {
       >
         Deposit
       </button>
+
+      {tx && (
+        <button
+          className="btn btn-primary"
+          disabled={verifyHook.isLoading}
+          onClick={verifyTransaction}
+        >
+          I've completed the payment.
+        </button>
+      )}
     </Container>
   );
 };

@@ -29,9 +29,21 @@ const api = createApi({
         body,
       }),
     }),
+    verifyFunding: builder.mutation({
+      query: (body) => ({
+        url: `wallet/verify/${body.reference}`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Auth"],
+    }),
   }),
 });
 
-export const { useGetAuthQuery, useFundWalletMutation } = api;
+export const {
+  useGetAuthQuery,
+  useFundWalletMutation,
+  useVerifyFundingMutation,
+} = api;
 
 export default api;

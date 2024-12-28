@@ -84,7 +84,7 @@ const Parlay = () => {
             onClick={async (e) => {
               try {
                 const datum = await enterParlay({
-                  odds: 1,
+                  odds: data?.odds[selectedOutcome],
                   selected_outcome: selectedOutcome,
                   id: data?.parlay.id,
                 }).unwrap();

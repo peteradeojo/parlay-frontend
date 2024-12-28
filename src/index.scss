@@ -4,10 +4,6 @@
 @tailwind utilities;
 @tailwind components;
 
-:root {
-  color-scheme: light dark;
-}
-
 * {
   box-sizing: border-box;
   padding: 0;
@@ -16,8 +12,8 @@
 
 @layer base {
   body {
-    background-color: #112a;
-    color: #fff;
+    // background-color: rgba(17, 17, 34, 0.667);
+    @apply bg-blue-950 text-white;
   }
 
   .btn {

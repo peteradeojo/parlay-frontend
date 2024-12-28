@@ -136,10 +136,12 @@ export const DraftParlayCard = ({ parlay, no_action = false }) => {
   );
 };
 
-export const Outcomes = ({ outcomes, state }) => {
+export const Outcomes = ({ outcomes, odds, state, className }) => {
   return (
     <>
-      <div className="flex w-full justify-evenly border-collapse rounded-md">
+      <div
+        className={`${className} flex w-full justify-evenly border-collapse rounded-md`}
+      >
         {outcomes?.filter((i, k) => i != "").length > 0 ? (
           outcomes
             .filter((o, k) => o != "")
@@ -162,7 +164,7 @@ export const Outcomes = ({ outcomes, state }) => {
                 }}
               >
                 <p>{out}</p>
-                <span className="text-xs"></span>
+                <span className="text-xs">x{odds ? Number(odds[k]).toFixed(1) : "0.0"}</span>
               </button>
             ))
         ) : (

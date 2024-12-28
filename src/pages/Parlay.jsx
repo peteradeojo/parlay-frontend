@@ -9,7 +9,7 @@ import {
 } from "../endpoints/parlays.js";
 import { Container } from "../components/Container.jsx";
 import { Outcomes, ParlayCard } from "../components/ParlayCard.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatDate, formatTime } from "../util.js";
 import { notification } from "antd";
 
@@ -18,17 +18,21 @@ const Parlay = () => {
   const navigate = useNavigate();
 
   const [selectedOutcome, setSelectedOutcome] = useState();
+  const [winnings, setWinnings] = useState(0);
   const [enterParlay, enterHook] = useEnterParlayMutation();
 
   /**
-   * @type {{data: ParlayType} & {[k: string]: boolean}}
+   * @type {{data: {parlay: ParlayType, odds: number[]}} & {[k: string]: boolean}}
    */
-  const {
-    data,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useGetParlayQuery(params.id);
+  const { data, isLoading, isSuccess, isError } = useGetParlayQuery(params.id);
+
+  useEffect(() => {
+    if (selectedOutcome !== undefined) {
+      setWinnings(data.odds[selectedOutcome] * data.parlay.entry_amount);
+    } else {
+      setWinnings(0);
+    }
+  }, [selectedOutcome]);
 
   return (
     <>
@@ -46,20 +50,27 @@ const Parlay = () => {
           <p className="text-xl font-bold">{data?.parlay?.title}</p>
 
           <Outcomes
+            className={"text-xl"}
             outcomes={data?.parlay?.outcomes}
+            odds={data?.odds}
             state={[selectedOutcome, setSelectedOutcome]}
           />
 
-          <p>Entry amount: ${Number(data?.parlay?.entry_amount || 0).toFixed(2)}</p>
+          <p>
+            Entry amount: $ {Number(data?.parlay?.entry_amount || 0).toFixed(2)}
+          </p>
+          <p>Potential winnings: $ {Number(winnings || 0).toFixed(2)}</p>
 
           <p>
             This parlay opened{" "}
             <b>
-              {formatDate(data?.parlay?.start_date)} {formatTime(data?.parlay?.start_time)}
+              {formatDate(data?.parlay?.start_date)}{" "}
+              {formatTime(data?.parlay?.start_time)}
             </b>{" "}
             and closes{" "}
             <b>
-              {formatDate(data?.parlay?.close_date)} {formatTime(data?.parlay?.close_time)}
+              {formatDate(data?.parlay?.close_date)}{" "}
+              {formatTime(data?.parlay?.close_time)}
             </b>
           </p>
 

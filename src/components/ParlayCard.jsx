@@ -164,7 +164,7 @@ export const Outcomes = ({ outcomes, odds, state, className }) => {
                 }}
               >
                 <p>{out}</p>
-                <span className="text-xs">x{odds ? Number(odds[k]).toFixed(1) : "0.0"}</span>
+                <span className="text-xs">x{odds ? Number(odds[k]).toFixed(2) : "0.0"}</span>
               </button>
             ))
         ) : (

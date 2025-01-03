@@ -115,7 +115,7 @@ const Navbar = () => {
           {"\u002b"} Create a parlay
         </Link>
 
-        <p>${Number(user.wallet?.amount).toPrecision(3)}</p>
+        <p>${Number(user.wallet?.amount).toFixed(2)}</p>
 
         <ProfileLinks profile={user} />
       </div>

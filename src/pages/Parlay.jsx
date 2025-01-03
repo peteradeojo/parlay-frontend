@@ -28,7 +28,7 @@ const Parlay = () => {
 
   useEffect(() => {
     if (selectedOutcome !== undefined) {
-      setWinnings(data.odds[selectedOutcome] * data.parlay.entry_amount);
+      setWinnings(Math.max(1, data.odds[selectedOutcome]) * data.parlay.entry_amount);
     } else {
       setWinnings(0);
     }

@@ -21,7 +21,7 @@ const parlaysApi = api.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["MyParlays", "Drafts", "Parlays", "Auth"],
+      invalidatesTags: ["MyParlays", "Drafts", "Parlays", "Auth", "Transactions"],
     }),
     getDrafts: builder.query({
       query: () => ({
@@ -53,7 +53,7 @@ const parlaysApi = api.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ["Auth", "Transactions"],
     }),
   }),
 });

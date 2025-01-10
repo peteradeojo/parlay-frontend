@@ -3,7 +3,12 @@
  */
 
 import React, { useRef, useState } from "react";
-import { Container, DateInput, TextInput } from "../components/Container";
+import {
+  Container,
+  Currency,
+  DateInput,
+  TextInput,
+} from "../components/Container";
 import { notification } from "antd";
 import { SaveFilled } from "@ant-design/icons";
 import { DraftParlayCard, ParlayCardPreview } from "../components/ParlayCard";
@@ -38,11 +43,16 @@ export const ParlayForm = ({
 
   const [parlay, setParlay] = parlayHook;
 
+  const [preview, setPreview] = useState({});
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        publishParlay(parlay);
+        publishParlay({
+          ...parlay,
+          selected_outcome: preview.selected_outcome,
+        });
       }}
       ref={formRef}
     >
@@ -116,11 +126,13 @@ export const ParlayForm = ({
           </div>
 
           <div className="w-1/3">
-            <label>Entry price $</label>
+            <label>
+              Entry price <Currency />
+            </label>
             <TextInput
               className="w-full"
               value={parlay.entry_amount}
-              placeholder="$1.00"
+              placeholder={"\u20a6"}
               onChange={(e) =>
                 setParlay({ ...parlay, entry_amount: e.target.value })
               }
@@ -192,7 +204,10 @@ export const ParlayForm = ({
 
         {/* Parlay preview */}
         {!editing ? (
-          <ParlayCardPreview parlay={parlay} />
+          <ParlayCardPreview
+            previewState={[preview, setPreview]}
+            parlay={parlay}
+          />
         ) : (
           <div className="col-span-2">
             <DraftParlayCard parlay={parlay} no_action />
@@ -225,13 +240,17 @@ const CreateParlay = () => {
       if (data.is_draft) {
         navigate("/drafts");
       } else {
-        navigate(`/parlays/${data.code}`);
+        navigate(`/parlays/${data.id}`);
       }
     } catch (error) {
       notification.error({
-        message: error.data.error,
+        message:
+          error.data.error ||
+          error.data.message ||
+          "Unable to save your parlay",
         duration: 4,
-      }); console.error(error);
+      });
+      console.error(error);
     }
   };
 

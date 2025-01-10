@@ -5,13 +5,14 @@
 import { format, parse } from "date-fns";
 import { Link } from "react-router";
 import { formatDate, formatTime } from "../util";
+import { Currency } from "./Container";
 
 /**
  * ParlayCard component
- * @param {{parlay: ParlayType}} param0
+ * @param {{parlay: ParlayType, previewState: [any, React.Dispatch<React.SetStateAction<any>>]}} param0
  * @returns
  */
-export const ParlayCardPreview = ({ parlay }) => {
+export const ParlayCardPreview = ({ parlay, previewState }) => {
   return (
     <div className="border-2 border-white col-span-2 p-4">
       <h1 className="text-3xl">#1xxx8</h1>
@@ -25,8 +26,28 @@ export const ParlayCardPreview = ({ parlay }) => {
               .filter((o, k) => o != "")
               .map((out, k) => (
                 <button
-                  className="btn p-1 w-full bg-gray-700 border border-red-400 rounded-[inherit]"
+                  className={`btn p-1 w-full bg-gray-700 border border-red-400 rounded-[inherit] ${
+                    previewState && previewState[0].selected_outcome == k
+                      ? "bg-green-400"
+                      : ""
+                  }`}
                   key={k}
+                  type="button"
+                  onClick={(e) => {
+                    if (previewState) {
+                      if (previewState[0].selected_outcome == k) {
+                        previewState[1]((prev) => ({
+                          ...prev,
+                          selected_outcome: undefined,
+                        }));
+                      } else {
+                        previewState[1]((prev) => ({
+                          ...prev,
+                          selected_outcome: k,
+                        }));
+                      }
+                    }
+                  }}
                 >
                   <p>{out}</p>
                   <span className="text-xs">x0.0</span>
@@ -40,7 +61,9 @@ export const ParlayCardPreview = ({ parlay }) => {
 
       <div className="py-3">
         <p className="text-lg font-semibold">Entry Amount</p>
-        <span>$ {Number(parlay.entry_amount)?.toFixed(2)}</span>
+        <span>
+          <Currency /> {Number(parlay.entry_amount)?.toFixed(2)}
+        </span>
       </div>
 
       <div className="py-3 flex justify-between">
@@ -100,7 +123,9 @@ export const DraftParlayCard = ({ parlay, no_action = false }) => {
 
         <div className="py-3">
           <p className="text-lg font-semibold">Entry Amount</p>
-          <span>$ {Number(parlay.entry_amount || 0).toFixed(2)}</span>
+          <span>
+            <Currency /> {Number(parlay.entry_amount || 0).toFixed(2)}
+          </span>
         </div>
 
         <div className="py-3 flex justify-between">
@@ -140,7 +165,7 @@ export const Outcomes = ({ outcomes, odds, state, className }) => {
   return (
     <>
       <div
-        className={`${className} flex w-full justify-evenly border-collapse rounded-md`}
+        className={`${className} flex gap-x-2 w-full justify-evenly border-collapse rounded-md`}
       >
         {outcomes?.filter((i, k) => i != "").length > 0 ? (
           outcomes
@@ -164,7 +189,20 @@ export const Outcomes = ({ outcomes, odds, state, className }) => {
                 }}
               >
                 <p>{out}</p>
-                <span className="text-xs">x{odds ? Number(odds[k]).toFixed(2) : "0.0"}</span>
+                {odds && (
+                  <span className="text-xs">
+                    x{odds ? Number(odds[k].value).toFixed(2) : "0.0"}
+                  </span>
+                )}
+                {odds && odds[k].noBets && (
+                  <p
+                    className={`text-xs ${
+                      state && state[0] == k ? "text-white" : "text-red-400"
+                    }`}
+                  >
+                    This outcome has no bets on it
+                  </p>
+                )}
               </button>
             ))
         ) : (
@@ -194,7 +232,9 @@ export const ParlayCard = ({ parlay, isMine }) => {
       </div>
 
       <div>
-        <p>Entry: ${Number(parlay.entry_amount).toFixed(2)}</p>
+        <p>
+          Entry: <Currency /> {Number(parlay.entry_amount).toFixed(2)}
+        </p>
       </div>
 
       <span>

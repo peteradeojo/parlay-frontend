@@ -7,7 +7,7 @@ import {
   useEnterParlayMutation,
   useGetParlayQuery,
 } from "../endpoints/parlays.js";
-import { Container } from "../components/Container.jsx";
+import { Container, Currency } from "../components/Container.jsx";
 import { Outcomes, ParlayCard } from "../components/ParlayCard.jsx";
 import { useEffect, useState } from "react";
 import { formatDate, formatTime } from "../util.js";
@@ -28,7 +28,9 @@ const Parlay = () => {
 
   useEffect(() => {
     if (selectedOutcome !== undefined) {
-      setWinnings(Math.max(1, data.odds[selectedOutcome]) * data.parlay.entry_amount);
+      setWinnings(
+        Math.max(1, data.odds[selectedOutcome].value) * data.parlay.entry_amount
+      );
     } else {
       setWinnings(0);
     }
@@ -57,9 +59,12 @@ const Parlay = () => {
           />
 
           <p>
-            Entry amount: $ {Number(data?.parlay?.entry_amount || 0).toFixed(2)}
+            Entry amount: <Currency />{" "}
+            {Number(data?.parlay?.entry_amount || 0).toFixed(2)}
           </p>
-          <p>Potential winnings: $ {Number(winnings || 0).toFixed(2)}</p>
+          <p>
+            Potential winnings: <Currency /> {Number(winnings || 0).toFixed(2)}
+          </p>
 
           <p>
             This parlay opened{" "}
@@ -84,7 +89,7 @@ const Parlay = () => {
             onClick={async (e) => {
               try {
                 const datum = await enterParlay({
-                  odds: data?.odds[selectedOutcome],
+                  odds: data?.odds[selectedOutcome].value,
                   selected_outcome: selectedOutcome,
                   id: data?.parlay.id,
                 }).unwrap();

@@ -14,7 +14,14 @@ const api = createApi({
   }),
   refetchOnReconnect: true,
   keepUnusedDataFor: 60,
-  tagTypes: ["Auth", "Parlays", "MyParlays", "Drafts", "Parlay"],
+  tagTypes: [
+    "Auth",
+    "Parlays",
+    "MyParlays",
+    "Drafts",
+    "Parlay",
+    "Transactions",
+  ],
   endpoints: (builder) => ({
     getAuth: builder.query({
       query: () => ({
@@ -35,7 +42,7 @@ const api = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ["Auth", "Transactions"],
     }),
   }),
 });

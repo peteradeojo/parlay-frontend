@@ -10,7 +10,7 @@ import {
   HistoryOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { TextInput } from "./Container";
+import { Currency, TextInput } from "./Container";
 import { Link } from "react-router";
 
 /**
@@ -115,7 +115,7 @@ const Navbar = () => {
           {"\u002b"} Create a parlay
         </Link>
 
-        <p>${Number(user.wallet?.amount).toFixed(2)}</p>
+        <p><Currency /> {Number(user.wallet?.amount).toFixed(2)}</p>
 
         <ProfileLinks profile={user} />
       </div>

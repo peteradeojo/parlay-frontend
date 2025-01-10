@@ -18,7 +18,7 @@ const Login = () => {
     firstname: "",
     lastname: "",
     terms: false,
-  }); 
+  });
 
   const [loginForm, setLoginForm] = useState({
     email: "",
@@ -32,7 +32,7 @@ const Login = () => {
       </Container>
 
       <Container>
-        <p>
+        {/* <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores
           sit magni est ea? Cumque necessitatibus molestias illum illo excepturi
           velit, rem tenetur cum maxime dolorum impedit cupiditate earum ex
@@ -40,7 +40,7 @@ const Login = () => {
           perspiciatis sunt minus quos aliquam autem architecto nesciunt ut. Qui
           molestiae maxime vel odio exercitationem quod distinctio accusamus
           praesentium aspernatur blanditiis!
-        </p>
+        </p> */}
       </Container>
 
       {!signup ? (
@@ -61,7 +61,7 @@ const Login = () => {
                   });
 
                   setTimeout(() => {
-                    navigate("/");
+                    window.location.href = "/";
                   }, 3000);
                 })
                 .catch((err) => {

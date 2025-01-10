@@ -57,4 +57,6 @@ export const DateInput = ({
   />
 );
 
+export const Currency = () => <>{"\u20a6"}</>;
+
 export { Container, TextInput };

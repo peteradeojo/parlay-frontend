@@ -33,3 +33,16 @@
  *  status: number;
  * }} User
  */
+
+/**
+ * @typedef {number} IStatus
+ * 
+ * @typedef {{
+ * name: string;
+ * description: string;
+ * id: number;
+ * amount: number;
+ * status: IStatus;
+ * createdat: Date;
+ * }} ITransaction
+ */

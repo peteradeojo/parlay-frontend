@@ -11,7 +11,14 @@ import { useGetTransactionsQuery } from "../endpoints/transactions";
 import { formatDate, formatDateTime } from "../util.js";
 
 // ! This must maintain the same index ordering as the enum on the backend
-export const Status = ["DRAFT", "OPEN", "RUNNING", "CLOSED", "RESOLVED"];
+export const Status = [
+  "DRAFT",
+  "OPEN",
+  "RUNNING",
+  "CLOSED",
+  "RESOLVED",
+  "Completed",
+];
 
 const Profile = () => {
   const { data } = useGetAuthQuery();
@@ -22,8 +29,8 @@ const Profile = () => {
 
   return (
     <Container>
-      <div className="grid w-full border-2 rounded p-4 gap-y-4">
-        <div className="flex justify-between items-end">
+      <div className="grid w-full border-2 rounded p-4 gap-y-8 sm:gap-y-4">
+        <div className="grid gap-y-4 sm:flex justify-between items-end">
           <div>
             <ProfilePicture
               profile={data}
@@ -31,18 +38,19 @@ const Profile = () => {
               width={120}
               className={"bg-white p-2"}
             />
-            <p className="text-xl font-semibold">
+            <p className="md:text-xl font-semibold">
               {data?.firstname} {data?.lastname}
             </p>
           </div>
-          <div className="w-1/4 grid grid-cols-4 gap-y-3">
-            <DollarCircleTwoTone className="text-[24px] col-span-2" />
-            <p className="text-2xl col-span-2 col-start-1">
+
+          <div className="lg:w-1/4 grid grid-cols-2 md:grid-cols-4 gap-y-2">
+            <DollarCircleTwoTone className="text-[24px] col-span-1" />
+            <p className="text-2xl md:col-span-2 col-start-2">
               <Currency /> {Number(data.wallet?.amount).toFixed(2)}
             </p>
             <Link
               to={"/account/deposit"}
-              className="btn bg-blue-400 place-self-start row-start-1 col-start-3 col-span-2 row-span-2 w-full"
+              className="btn bg-blue-400 place-self-start md:row-start-1 md:col-start-3 col-span-2 md:row-span-2 w-full"
             >
               Fund Wallet
             </Link>
@@ -52,13 +60,14 @@ const Profile = () => {
         {isLoading ? (
           <LoadingOutlined />
         ) : (
-          <div className="w-1/2">
+          <div className="w-full md:w-1/2">
             <p className="text-xl font-semibold">Transactions</p>
 
             <ul className="border divide-y">
               {transactions.data.map((t, i) => (
-                <li key={`tx-${i}`} className="p-1 grid grid-cols-3">
-                  <p className="col-span-3">{t.reference}</p>
+                <li key={`tx-${i}`} className="p-1 grid grid-cols-3 gap-y-2">
+                  <p className="col-span-2">{t.reference}</p>
+                  <p className="col-span-1">{Status[t.status]}</p>
                   <p className="text-lg font-semibold">{t.name}</p>
                   <p>
                     <Currency /> {t.amount.toFixed(2)}

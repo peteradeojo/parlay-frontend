@@ -25,7 +25,7 @@ const Home = () => {
         <p>Loading...</p>
       ) : isSuccess ? (
         <>
-          <div className="grid grid-cols-4 gap-x-2 gap-y-2">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-2">
             {data.length > 0 ? (
               data.map((i, k) => (
                 <ParlayCard

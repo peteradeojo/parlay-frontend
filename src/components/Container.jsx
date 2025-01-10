@@ -3,7 +3,7 @@
  */
 const Container = ({ children, className }) => {
   return (
-    <div className={`px-12 py-8 text-justify ${className}`}>{children}</div>
+    <div className={`p-4 md:px-12 md:py-8 text-justify ${className}`}>{children}</div>
   );
 };
 
@@ -22,7 +22,7 @@ const TextInput = ({
 }) => {
   return (
     <input
-      className={`${className} block border bg-slate-600 p-2 rounded`}
+      className={`block border bg-slate-600 p-2 rounded ${className}`}
       type={type}
       name={name}
       placeholder={placeholder}
